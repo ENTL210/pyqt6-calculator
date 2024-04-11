@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
         self.main = QWidget()
         self.main_layout = QGridLayout()
         self.main_layout.setSpacing(40)
+        self.main_layout.setContentsMargins(50, 50, 50, 50)
         self.main.setLayout(self.main_layout)
         self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
