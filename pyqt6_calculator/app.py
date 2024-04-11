@@ -1,4 +1,5 @@
-from PyQt6.QtCore import QSize, Qt
+from PyQt6 import QtWidgets
+from PyQt6.QtCore import QSize, Qt, QRect
 from PyQt6.QtGui import QFont
 from PyQt6.QtWidgets import (
     QApplication,
@@ -16,8 +17,6 @@ from PyQt6.QtWidgets import (
     QFrame
 )
 
-# class QVLine(QFrame):
-#     def __init__(self):
         
 
 class MainWindow(QMainWindow):
@@ -27,12 +26,14 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Mortgage Calculator")
 
         self.UiComponents()
+        
     def UiComponents(self):
 
         self.main = QWidget()
         self.main_layout = QGridLayout()
         self.main_layout.setSpacing(40)
         self.main.setLayout(self.main_layout)
+        self.main_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.setCentralWidget(self.main)
         
@@ -111,7 +112,31 @@ class MainWindow(QMainWindow):
         self.calculate_pushBtn.setMinimumSize(250, 50)
         self.main_layout.addWidget(self.calculate_pushBtn, 5, 0, 1, 2)
         
-        self.main_layout.setRowStretch(1,1)
+        self.line = QFrame()
+        self.line.setGeometry(QRect(60, 110, 751, 20))
+        self.line.setFrameShape(QFrame.Shape.VLine)
+        self.line.setFrameShadow(QFrame.Shadow.Sunken)
+        self.main_layout.addWidget(self.line, 1, 2, 5, 1)
+        
+        self.output_container = QWidget() 
+        self.output_container_layout = QVBoxLayout()
+        self.output_container_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.output_container.setLayout(self.output_container_layout)
+        self.output_container.setMinimumSize(400, 500)
+        self.main_layout.addWidget(self.output_container, 1, 3, 5, 2)
+        
+        self.monthy_payment_label = QLabel("Monthly Payment")
+        self.monthy_payment_label.setFont(QFont("Helvetica", 20))
+        self.monthy_payment_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.output_container_layout.addWidget(self.monthy_payment_label)
+        
+        self.monthly_payment_output_label = QLabel("N/A")
+        self.monthly_payment_output_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
+        self.monthly_payment_output_label.setFont(QFont("Helvetica", 20))
+        self.output_container_layout.addWidget(self.monthly_payment_output_label)
+        
+        
+        
         
     def set_down_payment_max(self):
         value = self.loan_amount_doubleSpinBox.value()
