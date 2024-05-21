@@ -14,11 +14,9 @@ from PyQt6.QtWidgets import (
     QLabel,
     QComboBox,
     QPushButton,
-    QFrame
+    QFrame,
 )
-
         
-
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -73,17 +71,17 @@ class MainWindow(QMainWindow):
         self.down_amount_doubleSpinBox.setMinimumSize(200, 50)
         self.down_amount_doubleSpinBox.valueChanged.connect(self.update_down_percent_value)
         
-        self.down_percent_spinBox = QSpinBox()
-        self.down_percent_spinBox.setMinimum(5)
-        self.down_percent_spinBox.setMaximum(100)
-        self.down_percent_spinBox.setSuffix(" %")
-        self.down_percent_spinBox.setFont(QFont("Helvetica", 10))
-        self.down_percent_spinBox.setSingleStep(5)
-        self.down_percent_spinBox.setMinimumSize(100,50)
-        self.down_percent_spinBox.valueChanged.connect(self.update_down_payment_value)
+        self.down_percent_doubleSpinBox = QDoubleSpinBox()
+        self.down_percent_doubleSpinBox.setMinimum(5)
+        self.down_percent_doubleSpinBox.setMaximum(100)
+        self.down_percent_doubleSpinBox.setSuffix(" %")
+        self.down_percent_doubleSpinBox.setFont(QFont("Helvetica", 10))
+        self.down_percent_doubleSpinBox.setSingleStep(5)
+        self.down_percent_doubleSpinBox.setMinimumSize(100,50)
+        self.down_percent_doubleSpinBox.valueChanged.connect(self.update_down_payment_value)
         
         self.down_amount_groupBox_layout.addWidget(self.down_amount_doubleSpinBox)
-        self.down_amount_groupBox_layout.addWidget(self.down_percent_spinBox)
+        self.down_amount_groupBox_layout.addWidget(self.down_percent_doubleSpinBox)
         self.main_layout.addWidget(self.down_amount_groupBox, 2, 0, 1, 2)
         
         self.loan_duration_groupBox = QGroupBox("Loan Duration")
@@ -114,6 +112,7 @@ class MainWindow(QMainWindow):
         
         self.calculate_pushBtn = QPushButton("Calculate")
         self.calculate_pushBtn.setMinimumSize(250, 50)
+        self.calculate_pushBtn.clicked.connect(self.calculate_output)
         self.main_layout.addWidget(self.calculate_pushBtn, 5, 0, 1, 2)
         
         self.line = QFrame()
@@ -130,20 +129,20 @@ class MainWindow(QMainWindow):
         self.main_layout.addWidget(self.output_container, 1, 3, 5, 2)
         
         self.monthy_payment_label = QLabel("Monthly Payment")
-        self.monthy_payment_label.setFont(QFont("Helvetica", 15))
+        self.monthy_payment_label.setFont(QFont("Helvetica", 12))
         self.monthy_payment_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.output_container_layout.addWidget(self.monthy_payment_label)
         
         self.monthly_payment_output_label = QLabel("N/A")
         self.monthly_payment_output_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        self.monthly_payment_output_label.setFont(QFont("Helvetica", 15))
+        self.monthly_payment_output_label.setFont(QFont("Helvetica", 12))
         self.output_container_layout.addWidget(self.monthly_payment_output_label)
         
 
     def update_down_payment_value(self):
         # Fetch value from the users...
         loan_amount = self.loan_amount_doubleSpinBox.value()
-        down_percent = self.down_percent_spinBox.value()
+        down_percent = self.down_percent_doubleSpinBox.value()
 
         # Update the maximum of down amount and the down amount value...
         self.down_amount_doubleSpinBox.setMaximum(loan_amount)
@@ -156,10 +155,19 @@ class MainWindow(QMainWindow):
         down_payment = self.down_amount_doubleSpinBox.value()
 
         if loan_amount == 0:
-            self.down_percent_spinBox.setValue(5)
+            self.down_percent_doubleSpinBox.setValue(5)
             self.update_down_payment_value()
         else:
-            self.down_percent_spinBox.setValue(int((down_payment / loan_amount) * 100))
+            self.down_percent_doubleSpinBox.setValue(round(((down_payment / loan_amount) * 100), 2))
+
+    def calculate_output(self):
+        total_loan_amount = self.loan_amount_doubleSpinBox.value() - self.down_amount_doubleSpinBox.value()
+        monthly_interest_rate = (self.interest_rate_doubleSpinBox.value() / 100) / 12
+        number_of_payments_arr = [120, 180, 240, 360]
+        number_of_payments = number_of_payments_arr[self.loan_duration_comboBox.currentIndex()]
+        monthly_mortgage_payment = total_loan_amount * ((monthly_interest_rate * ((1 + monthly_interest_rate) ** number_of_payments)) / (((1 + monthly_interest_rate) ** number_of_payments) - 1))
+        self.monthly_payment_output_label.setText(f"${round(monthly_mortgage_payment, 2)}")
+
 
 app = QApplication([])
 
