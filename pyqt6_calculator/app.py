@@ -50,7 +50,7 @@ class MainWindow(QMainWindow):
         self.loan_amount_doubleSpinBox.setMinimum(0.0)
         self.loan_amount_doubleSpinBox.setMaximum(float("inf"))
         self.loan_amount_doubleSpinBox.setPrefix("$ ")
-        self.loan_amount_doubleSpinBox.setFont(QFont("Helvetica", 10))
+        self.loan_amount_doubleSpinBox.setFont(QFont("Helvetica", 12))
         self.loan_amount_doubleSpinBox.setSingleStep(1000.0)
         self.loan_amount_doubleSpinBox.setMinimumSize(200, 50)
         self.loan_amount_doubleSpinBox.valueChanged.connect(self.update_down_payment_value)
@@ -66,7 +66,7 @@ class MainWindow(QMainWindow):
         self.down_amount_doubleSpinBox.setMinimum(0.0)
         self.down_amount_doubleSpinBox.setMaximum(self.loan_amount_doubleSpinBox.value())
         self.down_amount_doubleSpinBox.setPrefix("$ ")
-        self.down_amount_doubleSpinBox.setFont(QFont("Helvetica", 10))
+        self.down_amount_doubleSpinBox.setFont(QFont("Helvetica", 12))
         self.down_amount_doubleSpinBox.setSingleStep(1000.0)
         self.down_amount_doubleSpinBox.setMinimumSize(200, 50)
         self.down_amount_doubleSpinBox.valueChanged.connect(self.update_down_percent_value)
@@ -75,7 +75,7 @@ class MainWindow(QMainWindow):
         self.down_percent_doubleSpinBox.setMinimum(5)
         self.down_percent_doubleSpinBox.setMaximum(100)
         self.down_percent_doubleSpinBox.setSuffix(" %")
-        self.down_percent_doubleSpinBox.setFont(QFont("Helvetica", 10))
+        self.down_percent_doubleSpinBox.setFont(QFont("Helvetica", 12))
         self.down_percent_doubleSpinBox.setSingleStep(5)
         self.down_percent_doubleSpinBox.setMinimumSize(100,50)
         self.down_percent_doubleSpinBox.valueChanged.connect(self.update_down_payment_value)
@@ -91,7 +91,7 @@ class MainWindow(QMainWindow):
         self.loan_duration_comboBox = QComboBox()
         self.loan_duration_comboBox.addItems(["10 years", "15 years", "20 years", "30 years"])
         self.loan_duration_comboBox.setMinimumSize(200, 50)
-        self.loan_duration_comboBox.setFont(QFont("Helvetica", 10))
+        self.loan_duration_comboBox.setFont(QFont("Helvetica", 12))
         
         self.loan_duration_groupBox_layout.addWidget(self.loan_duration_comboBox)
         self.main_layout.addWidget(self.loan_duration_groupBox, 3, 0, 1, 2)
@@ -101,9 +101,10 @@ class MainWindow(QMainWindow):
         self.interest_rate_groupBox.setLayout(self.interest_rate_groupBox_layout)
         
         self.interest_rate_doubleSpinBox = QDoubleSpinBox()
+        self.interest_rate_doubleSpinBox.setValue(7.67)
         self.interest_rate_doubleSpinBox.setMinimum(0.0)
         self.interest_rate_doubleSpinBox.setSuffix(" %")
-        self.interest_rate_doubleSpinBox.setFont(QFont("Helvetica", 10))
+        self.interest_rate_doubleSpinBox.setFont(QFont("Helvetica", 12))
         self.interest_rate_doubleSpinBox.setSingleStep(0.1)
         self.interest_rate_doubleSpinBox.setMinimumSize(200, 50)
         
@@ -129,16 +130,15 @@ class MainWindow(QMainWindow):
         self.main_layout.addWidget(self.output_container, 1, 3, 5, 2)
         
         self.monthy_payment_label = QLabel("Monthly Payment")
-        self.monthy_payment_label.setFont(QFont("Helvetica", 12))
+        self.monthy_payment_label.setFont(QFont("Helvetica", 15))
         self.monthy_payment_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
         self.output_container_layout.addWidget(self.monthy_payment_label)
         
         self.monthly_payment_output_label = QLabel("N/A")
         self.monthly_payment_output_label.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        self.monthly_payment_output_label.setFont(QFont("Helvetica", 12))
+        self.monthly_payment_output_label.setFont(QFont("Helvetica", 18))
         self.output_container_layout.addWidget(self.monthly_payment_output_label)
         
-
     def update_down_payment_value(self):
         # Fetch value from the users...
         loan_amount = self.loan_amount_doubleSpinBox.value()
