@@ -16,6 +16,12 @@ from PyQt6.QtWidgets import (
     QPushButton,
     QFrame,
 )
+from controller import (
+    down_amount_calculation, 
+    down_percent_calculation, 
+    output_calculation, 
+    convertToStringOutput
+)
         
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -146,7 +152,7 @@ class MainWindow(QMainWindow):
 
         # Update the maximum of down amount and the down amount value...
         self.down_amount_doubleSpinBox.setMaximum(loan_amount)
-        self.down_amount_doubleSpinBox.setValue(loan_amount * (down_percent / 100))
+        self.down_amount_doubleSpinBox.setValue(down_amount_calculation(loan_amount, down_percent))
 
 
     def update_down_percent_value(self):
@@ -158,15 +164,17 @@ class MainWindow(QMainWindow):
             self.down_percent_doubleSpinBox.setValue(5)
             self.update_down_payment_value()
         else:
-            self.down_percent_doubleSpinBox.setValue(round(((down_payment / loan_amount) * 100), 2))
+            self.down_percent_doubleSpinBox.setValue(down_percent_calculation(down_payment, loan_amount))
 
     def calculate_output(self):
-        total_loan_amount = self.loan_amount_doubleSpinBox.value() - self.down_amount_doubleSpinBox.value()
-        monthly_interest_rate = (self.interest_rate_doubleSpinBox.value() / 100) / 12
-        number_of_payments_arr = [120, 180, 240, 360]
-        number_of_payments = number_of_payments_arr[self.loan_duration_comboBox.currentIndex()]
-        monthly_mortgage_payment = total_loan_amount * ((monthly_interest_rate * ((1 + monthly_interest_rate) ** number_of_payments)) / (((1 + monthly_interest_rate) ** number_of_payments) - 1))
-        self.monthly_payment_output_label.setText(f"${round(monthly_mortgage_payment, 2)}")
+        output = output_calculation(
+            self.loan_amount_doubleSpinBox.value(),
+            self.down_amount_doubleSpinBox.value(),
+            self.interest_rate_doubleSpinBox.value(),
+            self.loan_duration_comboBox.currentIndex()
+        )
+        
+        self.monthly_payment_output_label.setText(convertToStringOutput(output))
 
 
 app = QApplication([])
