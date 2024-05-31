@@ -1,0 +1,50 @@
+QWidget {}
+
+QLabel#header {
+    font-size: 30px;
+}
+
+QGroupBox::title {
+    padding: 1px;
+    font-size: 12px;
+}
+
+QDoubleSpinBox {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    background-color: none;
+    font-size: 12px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 10px;
+
+    padding-left: 10px;
+    border-left-style: solid;
+    /* just a single line */
+    border-top-right-radius: 3px;
+    /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QPushButton {
+    background-color: rgb(73,73,73);
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 4px;
+}
+
+QPushButton:hover {
+    background-color: #2d55ff ;
+}
+
+QLabel#output_label {
+    font-size: 20px;
+}
+
+QLabel#output {
+    font-size: 18px
+}

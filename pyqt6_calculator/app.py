@@ -1,3 +1,4 @@
+import sys
 from PyQt6 import QtWidgets
 from PyQt6.QtCore import QSize, Qt, QRect
 from PyQt6.QtGui import QFont
@@ -49,9 +50,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.main)
         
         # Header...
-        self.header = QLabel("Mortgage Calculator")
-        self.header.setAlignment(Qt.AlignmentFlag.AlignHCenter)
-        self.header.setFont(QFont("Helvetica", 15))
+        self.header = QLabel("Mortgage Calculator", objectName="header")
+        self.header.setAlignment(Qt.AlignmentFlag.AlignTop)
         self.main_layout.addWidget(self.header, 0, 0, 1, 5)
         
         # Loan Amount Entrybox Container...
@@ -125,10 +125,7 @@ class MainWindow(QMainWindow):
         
         # Initialize the options for the combobox...
         self.loan_duration_comboBox.addItems(["10 years", "15 years", "20 years", "30 years"])
-        
-        # Set the parameters for the comboxbox...
-        self.loan_duration_comboBox.setMinimumSize(200, 50)
-        self.loan_duration_comboBox.setFont(QFont("Helvetica", 12))
+    
         
         # Add the combobox to the layout...
         self.loan_duration_groupBox_layout.addWidget(self.loan_duration_comboBox)
@@ -188,8 +185,8 @@ class MainWindow(QMainWindow):
         self.main_layout.addWidget(self.output_container, 1, 3, 5, 2)
         
         # Create the output label...
-        self.monthy_payment_label = QLabel("Monthly Payment")
-        self.monthly_payment_output_label = QLabel("N/A")
+        self.monthy_payment_label = QLabel("Monthly Payment", objectName="output_label")
+        self.monthly_payment_output_label = QLabel("N/A", objectName="output")
     
         # Set the parameters of the labels...
         self.monthy_payment_label.setFont(QFont("Helvetica", 15))
@@ -232,8 +229,13 @@ class MainWindow(QMainWindow):
         
         self.monthly_payment_output_label.setText(convertToStringOutput(output))
 
-
 app = QApplication([])
+
+# Apply styles to the application...
+with open("styles.css", "r") as file:
+    styles = file.read()
+    app.setStyleSheet(styles)
+    
 
 # Create the primary window...
 window = MainWindow()
